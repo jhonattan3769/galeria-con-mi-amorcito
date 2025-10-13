@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria con mi amorcito</title>
+    <style>
+        /* Aquí pondremos estilos básicos para que se vea bonito más adelante */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #5a5a5a;
+        }
+        #upload-form {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        /* Esto es solo para el ejemplo, lo haremos funcional después */
+        .gallery-img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>¡Galeria con mi amorcito!</h1>
+        <p>Esta galeria la cree con el fin dde preservar nuestros mejores recuerdos</p>
+
+        <div id="upload-container">
+            <h3>¡Sube el recuerdo aquí!</h3>
+            <form id="upload-form">
+                <input type="file" id="photo-input" name="photo" accept="image/*" required>
+                <button type="submit">Compartir Foto</button>
+            </form>
+        </div>
+
+        <h2>Galería de Recuerdos</h2>
+        <div id="gallery">
+            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
+            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
+            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('upload-form');
+        const photoInput = document.getElementById('photo-input');
+        const gallery = document.getElementById('gallery');
+
+        // --- 1. FUNCIÓN PARA SUBIR LA FOTO ---
+        uploadForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evitamos que la página se recargue
+
+            const file = photoInput.files[0];
+            if (!file) {
+                alert('Por favor, selecciona una foto para subir.');
+                return;
+            }
+
+            // Usamos FormData para empaquetar nuestro archivo
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                // Hacemos la petición POST a nuestro servidor
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('¡Foto subida con éxito!');
+                    // Añadimos la nueva foto a la galería sin recargar
+                    addImageToGallery(result.filePath); 
+                    uploadForm.reset(); // Limpiamos el formulario
+                } else {
+                    alert('Hubo un error al subir la foto: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+
+        // --- 2. FUNCIÓN PARA MOSTRAR UNA NUEVA FOTO EN LA GALERÍA ---
+        function addImageToGallery(imagePath) {
+            const newImage = document.createElement('img');
+            newImage.src = imagePath; // La ruta viene del servidor
+            newImage.alt = 'Foto de la boda';
+            newImage.classList.add('gallery-img');
+            // Añadimos la nueva imagen al principio de la galería
+            gallery.prepend(newImage); 
+        }
+
+        // --- 3. FUNCIÓN PARA CARGAR TODAS LAS FOTOS EXISTENTES AL INICIAR ---
+        async function loadInitialPhotos() {
+            try {
+                const response = await fetch('/photos'); // Haremos esta nueva ruta en el servidor
+                const photos = await response.json();
+                
+                // Limpiamos la galería de ejemplos
+                gallery.innerHTML = ''; 
+                
+                // Mostramos cada foto que ya está en el servidor
+                photos.forEach(photoPath => {
+                    addImageToGallery(photoPath);
+                });
+            } catch (error) {
+                console.error('Error al cargar las fotos:', error);
+            }
+        }
+        
+        // --- Cargar las fotos cuando la página esté lista ---
+        window.onload = loadInitialPhotos;
+    </script>
+
+</body>
+</html>
