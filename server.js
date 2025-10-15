@@ -5,7 +5,6 @@ const cors = require('cors');
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const fs = require('fs'); // <--- Asegúrate de que esta línea esté solo una vez
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +20,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'boda-fotos',
+        // CAMBIO: Nueva carpeta para este proyecto específico
+        folder: 'galeria-amorcito', 
         allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp']
     }
 });
@@ -45,11 +45,11 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 app.get('/photos', async (req, res) => {
     try {
         const { resources } = await cloudinary.search
-            .expression('folder:boda-fotos')
+            .expression('folder:galeria-amorcito') // CAMBIO: Leer de la nueva carpeta
             .sort_by('created_at', 'desc')
             .max_results(500)
             .execute();
-
+        
         const photoUrls = resources.map(file => file.secure_url);
         res.json(photoUrls);
     } catch (error) {
@@ -59,7 +59,7 @@ app.get('/photos', async (req, res) => {
 });
 
 // Ruta para eliminar una foto
-const ADMIN_PASSWORD = "boda-secreta-2025";
+const ADMIN_PASSWORD = "amorcito-secreto-2025"; // Puedes cambiar la contraseña si quieres
 
 app.delete('/delete/:filename', async (req, res) => {
     const { filename } = req.params;
@@ -70,7 +70,7 @@ app.delete('/delete/:filename', async (req, res) => {
     }
 
     try {
-        const public_id = `boda-fotos/${path.parse(filename).name}`;
+        const public_id = `galeria-amorcito/${path.parse(filename).name}`; // CAMBIO: Eliminar de la nueva carpeta
         await cloudinary.uploader.destroy(public_id);
         res.json({ success: true, message: 'Foto eliminada correctamente.' });
     } catch (error) {
