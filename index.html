@@ -337,6 +337,56 @@ button:hover, input[type="file"]::file-selector-button:hover {
         }
         
         window.onload = loadInitialPhotos;
+        // --- 1. REEMPLAZA tu función addImageToGallery con esta ---
+function addImageToGallery(imagePath) {
+    const filename = imagePath.split('/').pop();
+    const container = document.createElement('div');
+    container.classList.add('gallery-item');
+
+    const newImage = document.createElement('img');
+    newImage.src = imagePath;
+    newImage.alt = 'Recuerdo';
+    newImage.classList.add('gallery-img');
+    
+    // --- LÍNEA CLAVE --- Hacemos que la imagen sea clickeable
+    newImage.onclick = () => openModal(imagePath);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'X';
+    deleteButton.classList.add('delete-btn');
+    deleteButton.onclick = () => deletePhoto(filename, container);
+
+    container.appendChild(newImage);
+    container.appendChild(deleteButton);
+    gallery.prepend(container);
+}
+
+
+// --- 2. AÑADE este nuevo código al final de tu <script> ---
+
+// Lógica para controlar el Modal (Lightbox)
+const modal = document.getElementById("myModal");
+const modalImg = document.getElementById("img01");
+
+function openModal(imageSrc) {
+  modal.style.display = "block";
+  modalImg.src = imageSrc;
+}
+
+// Obtiene el elemento <span> que cierra el modal
+const span = document.getElementsByClassName("close")[0];
+
+// Cuando el usuario hace clic en <span> (x), cierra el modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// También cierra el modal si el usuario hace clic fuera de la imagen
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
     </script>
 <div id="myModal" class="modal">
   <span class="close">&times;</span>
