@@ -36,12 +36,37 @@
             gap: 15px;
             margin-top: 30px;
         }
+        .gallery-item {
+            position: relative; /* Contenedor para posicionar el botón */
+        }
         .gallery-img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            opacity: 0; /* Oculto por defecto */
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-item:hover .delete-btn {
+            opacity: 1; /* Aparece cuando pasas el mouse por encima */
         }
     </style>
 </head>
@@ -69,7 +94,6 @@
         const photoInput = document.getElementById('photo-input');
         const gallery = document.getElementById('gallery');
         
-        // ¡LA CORRECCIÓN MÁS IMPORTANTE! La dirección de tu nuevo servidor.
         const API_URL = 'https://galeria-con-mi-amorcito.onrender.com';
 
         // --- FUNCIÓN PARA SUBIR LA FOTO ---
@@ -82,14 +106,9 @@
             }
             const formData = new FormData();
             formData.append('photo', file);
-
             try {
-                const response = await fetch(`${API_URL}/upload`, {
-                    method: 'POST',
-                    body: formData
-                });
+                const response = await fetch(`${API_URL}/upload`, { method: 'POST', body: formData });
                 const result = await response.json();
-
                 if (result.success) {
                     alert('¡Foto subida con éxito!');
                     addImageToGallery(result.filePath);
@@ -104,11 +123,47 @@
 
         // --- FUNCIÓN PARA MOSTRAR UNA FOTO EN LA GALERÍA ---
         function addImageToGallery(imagePath) {
+            const filename = imagePath.split('/').pop();
+            const container = document.createElement('div');
+            container.classList.add('gallery-item');
+
             const newImage = document.createElement('img');
-            newImage.src = imagePath; // La URL ya viene completa desde Cloudinary
+            newImage.src = imagePath;
             newImage.alt = 'Recuerdo';
             newImage.classList.add('gallery-img');
-            gallery.prepend(newImage);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'X';
+            deleteButton.classList.add('delete-btn');
+            deleteButton.onclick = () => deletePhoto(filename, container);
+
+            container.appendChild(newImage);
+            container.appendChild(deleteButton);
+            gallery.prepend(container);
+        }
+        
+        // --- NUEVA FUNCIÓN PARA ELIMINAR FOTOS ---
+        async function deletePhoto(filename, containerElement) {
+            const password = prompt("Para eliminar la foto, ingresa la contraseña de administrador:");
+            if (!password) return; // Si el usuario cancela, no hacemos nada
+
+            try {
+                const response = await fetch(`${API_URL}/delete/${filename}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: password }) // Enviamos la contraseña
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Foto eliminada con éxito.');
+                    containerElement.remove(); // Eliminamos la foto de la galería
+                } else {
+                    alert('Error al eliminar: ' + result.message);
+                }
+            } catch (error) {
+                alert('No se pudo conectar con el servidor para eliminar la foto.');
+            }
         }
 
         // --- FUNCIÓN PARA CARGAR LAS FOTOS AL INICIO ---
@@ -117,9 +172,7 @@
                 const response = await fetch(`${API_URL}/photos`);
                 const photos = await response.json();
                 gallery.innerHTML = '';
-                photos.forEach(photoPath => {
-                    addImageToGallery(photoPath);
-                });
+                photos.forEach(photoPath => addImageToGallery(photoPath));
             } catch (error) {
                 console.error('Error al cargar las fotos:', error);
             }
