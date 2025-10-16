@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria con mi amorcito</title>
+    <title>Galería con mi amorcito</title>
     <style>
-        /* Aquí pondremos estilos básicos para que se vea bonito más adelante */
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
@@ -32,15 +31,13 @@
             border-radius: 10px;
         }
         #gallery {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
-            justify-content: center;
             margin-top: 30px;
         }
-        /* Esto es solo para el ejemplo, lo haremos funcional después */
         .gallery-img {
-            width: 250px;
+            width: 100%;
             height: 250px;
             object-fit: cover;
             border-radius: 8px;
@@ -51,8 +48,8 @@
 <body>
 
     <div class="container">
-        <h1>¡Galeria con mi amorcito!</h1>
-        <p>Esta galeria la cree con el fin dde preservar nuestros mejores recuerdos</p>
+        <h1>¡Galería con mi amorcito!</h1>
+        <p>Esta galería la cree con el fin de preservar nuestros mejores recuerdos</p>
 
         <div id="upload-container">
             <h3>¡Sube el recuerdo aquí!</h3>
@@ -64,84 +61,71 @@
 
         <h2>Galería de Recuerdos</h2>
         <div id="gallery">
-            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
-            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
-            <img src="https://via.placeholder.com/250" alt="Foto de la boda" class="gallery-img">
-        </div>
-    </div>
-</div>
-
+            </div>
     </div>
 
     <script>
         const uploadForm = document.getElementById('upload-form');
-    const photoInput = document.getElementById('photo-input');
-    const gallery = document.getElementById('gallery');
+        const photoInput = document.getElementById('photo-input');
+        const gallery = document.getElementById('gallery');
+        
+        // ¡LA CORRECCIÓN MÁS IMPORTANTE! La dirección de tu nuevo servidor.
+        const API_URL = 'https://galeria-con-mi-amorcito.onrender.com';
 
-    // AQUÍ ESTÁ LA LÍNEA CLAVE: La dirección completa de tu servidor en Render
-    const API_URL = 'https://galeria-con-mi-amorcito.onrender.com';
-
-    // --- 1. FUNCIÓN PARA SUBIR LA FOTO ---
-    uploadForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const file = photoInput.files[0];
-        if (!file) {
-            alert('Por favor, selecciona una foto para subir.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('photo', file);
-
-        try {
-            // Usamos la variable API_URL para la dirección completa
-            const response = await fetch(`${API_URL}/upload`, {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                alert('¡Foto subida con éxito!');
-                addImageToGallery(result.filePath); 
-                uploadForm.reset();
-            } else {
-                alert('Hubo un error al subir la foto: ' + result.message);
+        // --- FUNCIÓN PARA SUBIR LA FOTO ---
+        uploadForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const file = photoInput.files[0];
+            if (!file) {
+                alert('Por favor, selecciona una foto.');
+                return;
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('No se pudo conectar con el servidor.');
-        }
-    });
+            const formData = new FormData();
+            formData.append('photo', file);
 
-    // --- 2. FUNCIÓN PARA MOSTRAR UNA NUEVA FOTO EN LA GALERÍA ---
-    function addImageToGallery(imagePath) {
-        const newImage = document.createElement('img');
-        // La variable imagePath ya viene con la URL completa de Cloudinary
-        newImage.src = imagePath; 
-        newImage.alt = 'Recuerdo';
-        newImage.classList.add('gallery-img');
-        gallery.prepend(newImage); 
-    }
+            try {
+                const response = await fetch(`${API_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
 
-    // --- 3. FUNCIÓN PARA CARGAR TODAS LAS FOTOS EXISTENTES AL INICIAR ---
-    async function loadInitialPhotos() {
-        try {
-            // Usamos la variable API_URL para la dirección completa
-            const response = await fetch(`${API_URL}/photos`);
-            const photos = await response.json();
-            
-            gallery.innerHTML = ''; 
-            
-            photos.forEach(photoPath => {
-                addImageToGallery(photoPath);
-            });
-        } catch (error) {
-            console.error('Error al cargar las fotos:', error);
+                if (result.success) {
+                    alert('¡Foto subida con éxito!');
+                    addImageToGallery(result.filePath);
+                    uploadForm.reset();
+                } else {
+                    alert('Hubo un error al subir la foto.');
+                }
+            } catch (error) {
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+
+        // --- FUNCIÓN PARA MOSTRAR UNA FOTO EN LA GALERÍA ---
+        function addImageToGallery(imagePath) {
+            const newImage = document.createElement('img');
+            newImage.src = imagePath; // La URL ya viene completa desde Cloudinary
+            newImage.alt = 'Recuerdo';
+            newImage.classList.add('gallery-img');
+            gallery.prepend(newImage);
         }
-    }
-    
-    // --- Cargar las fotos cuando la página esté lista ---
-    window.onload = loadInitialPhotos;
+
+        // --- FUNCIÓN PARA CARGAR LAS FOTOS AL INICIO ---
+        async function loadInitialPhotos() {
+            try {
+                const response = await fetch(`${API_URL}/photos`);
+                const photos = await response.json();
+                gallery.innerHTML = '';
+                photos.forEach(photoPath => {
+                    addImageToGallery(photoPath);
+                });
+            } catch (error) {
+                console.error('Error al cargar las fotos:', error);
+            }
+        }
+        
+        window.onload = loadInitialPhotos;
     </script>
 
 </body>
