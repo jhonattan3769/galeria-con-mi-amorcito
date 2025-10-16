@@ -9,7 +9,7 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuración de Cloudinary
+// Configuración de Cloudinary (lee las claves desde Render)
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -20,8 +20,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        // CAMBIO: Nueva carpeta para este proyecto específico
-        folder: 'galeria-amorcito', 
+        folder: 'galeria-amorcito', // Carpeta exclusiva para este proyecto
         allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp']
     }
 });
@@ -31,6 +30,8 @@ const upload = multer({ storage: storage });
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// --- RUTAS DE LA API ---
 
 // Ruta para subir una foto
 app.post('/upload', upload.single('photo'), (req, res) => {
@@ -45,7 +46,7 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 app.get('/photos', async (req, res) => {
     try {
         const { resources } = await cloudinary.search
-            .expression('folder:galeria-amorcito') // CAMBIO: Leer de la nueva carpeta
+            .expression('folder:galeria-amorcito')
             .sort_by('created_at', 'desc')
             .max_results(500)
             .execute();
@@ -59,7 +60,7 @@ app.get('/photos', async (req, res) => {
 });
 
 // Ruta para eliminar una foto
-const ADMIN_PASSWORD = "amorcito-secreto-2025"; // Puedes cambiar la contraseña si quieres
+const ADMIN_PASSWORD = "amorcito-secreto-2025";
 
 app.delete('/delete/:filename', async (req, res) => {
     const { filename } = req.params;
@@ -70,7 +71,7 @@ app.delete('/delete/:filename', async (req, res) => {
     }
 
     try {
-        const public_id = `galeria-amorcito/${path.parse(filename).name}`; // CAMBIO: Eliminar de la nueva carpeta
+        const public_id = `galeria-amorcito/${path.parse(filename).name}`;
         await cloudinary.uploader.destroy(public_id);
         res.json({ success: true, message: 'Foto eliminada correctamente.' });
     } catch (error) {
