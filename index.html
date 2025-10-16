@@ -143,7 +143,88 @@ button:hover, input[type="file"]::file-selector-button:hover {
     opacity: 1;
     transform: scale(1.1);
 }
+/* --- INICIO DE NUEVOS ESTILOS - Marcos y Modal --- */
 
+/* 9. Marcos coloridos para las fotos */
+.gallery-item {
+    padding: 10px; /* Espacio para el marco */
+    border-radius: 20px; /* Redondeamos también el marco */
+    background: #fff; /* Un fondo base por si acaso */
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05); /* Un efecto de levantarse al pasar el mouse */
+}
+
+/* Usamos :nth-child para alternar los colores de los marcos */
+.gallery-item:nth-child(4n+1) {
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+}
+.gallery-item:nth-child(4n+2) {
+    background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+}
+.gallery-item:nth-child(4n+3) {
+    background: linear-gradient(45deg, #84fab0, #8fd3f4);
+}
+.gallery-item:nth-child(4n+4) {
+    background: linear-gradient(45deg, #fccb90, #d57eeb);
+}
+
+.gallery-img {
+    cursor: pointer; /* Cambia el cursor a una mano para indicar que es clickeable */
+}
+
+
+/* 10. Estilos del Modal (Lightbox) */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se queda fijo en la pantalla */
+    z-index: 1000; /* Se asegura de que esté por encima de todo */
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9); /* Fondo negro semi-transparente */
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+/* Animación de zoom para la imagen */
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* --- FIN DE LOS NUEVOS ESTILOS --- */
 /* --- FIN DE LOS NUEVOS ESTILOS --- */
     </style>
 </head>
@@ -257,6 +338,9 @@ button:hover, input[type="file"]::file-selector-button:hover {
         
         window.onload = loadInitialPhotos;
     </script>
-
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+</div>
 </body>
 </html>
