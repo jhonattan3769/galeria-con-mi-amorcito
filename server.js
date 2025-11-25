@@ -60,7 +60,7 @@ app.get('/photos', async (req, res) => {
 });
 
 // --- NUEVA RUTA PARA ELIMINAR FOTOS ---
-const ADMIN_PASSWORD = "amorcito-secreto-2025"; // ¡Puedes cambiar esta contraseña!
+const ADMIN_PASSWORD = "bubito"; // ¡Puedes cambiar esta contraseña!
 
 app.delete('/delete/:filename', async (req, res) => {
     const { filename } = req.params;
