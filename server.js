@@ -9,6 +9,9 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// --- CONFIGURACIÓN DE SEGURIDAD ---
+const ADMIN_PASSWORD = "bubito"; // Contraseña para subir y borrar
+
 // Configuración de Cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,12 +32,24 @@ const upload = multer({ storage: storage });
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // Necesario para leer la contraseña del cuerpo de la petición
+app.use(express.json());
 
 // --- RUTAS DE LA API ---
 
-// Ruta para subir una foto
-app.post('/upload', upload.single('photo'), (req, res) => {
+// Ruta para subir una foto (CON VERIFICACIÓN DE CONTRASEÑA)
+app.post('/upload', upload.single('photo'), async (req, res) => {
+    // 1. Verificamos la contraseña que llega desde el formulario
+    const { password } = req.body;
+
+    if (password !== ADMIN_PASSWORD) {
+        // Si la contraseña es incorrecta, borramos la foto que se acaba de subir
+        if (req.file) {
+            await cloudinary.uploader.destroy(req.file.filename);
+        }
+        return res.json({ success: false, message: 'Contraseña incorrecta. No se guardó la foto.' });
+    }
+
+    // 2. Si la contraseña es correcta y hay archivo
     if (req.file) {
         res.json({ success: true, message: '¡Foto subida correctamente!', filePath: req.file.path });
     } else {
@@ -59,9 +74,7 @@ app.get('/photos', async (req, res) => {
     }
 });
 
-// --- NUEVA RUTA PARA ELIMINAR FOTOS ---
-const ADMIN_PASSWORD = "bubito"; // ¡Puedes cambiar esta contraseña!
-
+// Ruta para eliminar fotos
 app.delete('/delete/:filename', async (req, res) => {
     const { filename } = req.params;
     const { password } = req.body;
@@ -72,10 +85,8 @@ app.delete('/delete/:filename', async (req, res) => {
     }
 
     try {
-        // 2. Construimos el ID público que Cloudinary necesita para encontrar la imagen
+        // 2. Construimos el ID público y borramos
         const public_id = `galeria-amorcito/${path.parse(filename).name}`;
-        
-        // 3. Enviamos la orden de borrado a Cloudinary
         await cloudinary.uploader.destroy(public_id);
         
         res.json({ success: true, message: 'Foto eliminada correctamente.' });
