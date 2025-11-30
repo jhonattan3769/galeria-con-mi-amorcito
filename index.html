@@ -3,366 +3,357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería con mi amorcito</title>
+    <title>Jhonattan y Debora</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💙</text></svg>">
+    
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 'Great Vibes' para el título cursivo y 'Montserrat' para el texto -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        /* --- INICIO DE NUEVOS ESTILOS - Estilo Scrapbook --- */
-
-        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Poppins:wght@300;400&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background-color: #B0E0E6; /* Color de fondo tipo papel */
-            color: #00008B;
-            margin: 0;
-            padding: 40px 20px;
-            font-weight: 300;
+        :root {
+            --bg-color: #FDF5E6; /* Beige claro de fondo (Old Lace) */
+            --header-bg: #F5E6D3; /* Beige un poco más oscuro para el header */
+            --accent-color: #008080; /* Teal/Turquesa oscuro para el corazón y botones */
+            --text-color: #4a4a4a;
+            --white: #ffffff;
         }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background-color: transparent; /* Hacemos el contenedor transparente */
-            padding: 10px;
-            border-radius: 0;
-            box-shadow: none; /* Quitamos la sombra del contenedor */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* --- ENCABEZADO --- */
+        header {
+            background-color: var(--header-bg);
+            padding: 40px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
         }
 
         h1 {
-            font-family: 'Kalam', cursive; /* Fuente tipo "hecha a mano" */
-            font-weight: 700;
-            color: #00008B;
-            font-size: 3.5em;
-        }
-        h2 {
-            font-family: 'Kalam', cursive;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5em; /* Tamaño grande para los nombres */
             font-weight: 400;
-            font-size: 2em;
-            margin-top: 30px;
-        }
-        p {
-            font-size: 1.1em;
+            margin: 0;
+            color: #333;
+            line-height: 1.2;
         }
 
-        /* Estilo del formulario de subida */
-        #upload-form {
-            margin: 30px 0;
-            padding: 20px;
-            border: 2px dashed #c9c0aa;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.5);
+        .heart {
+            color: var(--accent-color); /* Corazón color turquesa */
+            font-size: 0.8em;
+            display: inline-block;
+            margin: 0 10px;
+            vertical-align: middle;
         }
 
-        /* Estilo de la "Página" del libro */
-        #gallery {
-            position: relative; /* ¡MUY IMPORTANTE! */
+        /* --- BARRA DE NAVEGACIÓN (Decorativa) --- */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: #666;
+            text-decoration: none;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            font-weight: 500;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* --- FORMULARIO DE SUBIDA --- */
+        #upload-container {
+            margin-bottom: 60px;
+            padding: 30px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color: rgba(255,255,255,0.5);
+            display: inline-block;
             width: 100%;
-            height: 800px; /* Altura fija para nuestra "página" */
-            background: #fffdf7; /* Color de página de libro */
-            border: 1px solid #ddd;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-radius: 5px;
-            overflow: hidden; /* Oculta lo que se salga */
+            max-width: 500px;
         }
 
-        /* Estilo de cada foto (tipo polaroid) */
+        input[type="file"] { display: none; }
+
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: white;
+            color: #555;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .custom-file-upload:hover { background-color: #f0f0f0; }
+
+        button#submit-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            margin-top: 15px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        button#submit-btn:hover { background-color: #006666; }
+        button#submit-btn:disabled { background-color: #ccc; }
+
+        /* --- GALERÍA ESTILO POLAROID --- */
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
         .gallery-item {
-            position: absolute; /* ¡LA CLAVE! Se posicionarán aleatoriamente */
-            background: white;
-            padding: 10px 10px 20px 10px; /* Espacio para el marco */
-            border-radius: 3px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--white);
+            padding: 15px 15px 50px 15px; /* Espacio extra abajo para efecto polaroid */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            border: 1px solid #eee;
         }
 
         .gallery-item:hover {
-            transform: scale(1.1) !important; /* Hacemos zoom (importante para sobreescribir el JS) */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
-            z-index: 10 !important; /* Se pone por encima de las otras */
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 10;
         }
 
         .gallery-img {
-            width: 180px; /* Tamaño base de la foto */
-            height: 180px;
+            width: 100%;
+            height: 300px;
             object-fit: cover;
+            display: block;
             cursor: pointer;
+            filter: sepia(10%); /* Un toque ligero de filtro para dar calidez */
         }
 
+        /* Botón de eliminar discreto */
         .delete-btn {
             position: absolute;
-            top: -10px; /* Lo ponemos por fuera del marco */
+            top: -10px;
             right: -10px;
-            background-color: #ff6b6b;
+            background-color: #d9534f;
             color: white;
             border: 2px solid white;
-            border-radius: 50%;
             width: 30px;
             height: 30px;
+            border-radius: 50%;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
             opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
+            transition: opacity 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .gallery-item:hover .delete-btn { opacity: 1; }
+
+        /* Footer decorativo */
+        .footer-date {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5em;
+            color: #888;
+            margin-top: 60px;
+            margin-bottom: 40px;
         }
 
-        .gallery-item:hover .delete-btn {
-            opacity: 1;
-            transform: scale(1.1);
-        }
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 2000; padding-top: 40px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
+        .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90vh; object-fit: contain; box-shadow: 0 0 20px rgba(0,0,0,0.5); border: 10px solid white; }
+        .close { position: absolute; top: 20px; right: 40px; color: #f1f1f1; font-size: 50px; font-weight: bold; cursor: pointer; }
 
-        /* Estilos de los botones de paginación */
-        .pagination {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5em; }
+            .nav-bar { gap: 15px; font-size: 0.8em; }
+            #gallery { grid-template-columns: 1fr; padding: 0; }
         }
-        .nav-btn {
-            font-family: 'Poppins', sans-serif;
-            background-color: #2641a1;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .nav-btn:hover {
-            background-color: #2641a1;
-        }
-        .nav-btn:disabled {
-            background-color:#5b7ce1;
-            cursor: not-allowed;
-        }
-        #page-info {
-            font-family: 'Kalam', cursive;
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        /* Estilos del Modal (Lightbox) */
-        .modal {
-            display: none; position: fixed; z-index: 1000;
-            padding-top: 60px; left: 0; top: 0;
-            width: 100%; height: 100%; overflow: auto;
-            background-color: rgba(0,0,0,0.9);
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            margin: auto; display: block; width: 80%; max-width: 700px;
-            animation-name: zoom; animation-duration: 0.6s;
-        }
-        @keyframes zoom { from {transform:scale(0)} to {transform:scale(1)} }
-        .close {
-            position: absolute; top: 15px; right: 35px;
-            color: #f1f1f1; font-size: 40px; font-weight: bold;
-            transition: 0.3s; cursor: pointer;
-        }
-        .close:hover, .close:focus { color: #bbb; }
-        /* --- FIN DE LOS NUEVOS ESTILOS --- */
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>¡Galería con mi amorcito!</h1>
-        <p>Esta galería la cree con el fin de preservar nuestros mejores recuerdos</p>
+    <header>
+        <div class="logo-container">
+            <!-- NOMBRES PERSONALIZADOS -->
+            <h1>Jhonattan <span class="heart">❤</span> Debora</h1>
+        </div>
+        
+        <!-- Barra de navegación decorativa -->
+        <div class="nav-bar">
+            <span class="nav-item active">Fotos</span>
+        
+        </div>
+    </header>
 
+    <div class="container">
+        
+        <!-- Formulario simple y limpio -->
         <div id="upload-container">
-            <h3>¡Sube el recuerdo aquí!</h3>
             <form id="upload-form">
-                <input type="file" id="photo-input" name="photo" accept="image/*" required>
-                <button type="submit">Compartir Foto</button>
+                <label class="custom-file-upload">
+                    <input type="file" id="photo-input" name="photo" accept="image/*" required>
+                    📷 Seleccionar Foto
+                </label>
+                <div id="file-name-display" style="margin-top: 10px; font-size: 0.9em; font-style: italic; color: #888;"></div>
+                <br>
+                <button type="submit" id="submit-btn">Subir Recuerdo</button>
             </form>
         </div>
 
-        <h2>Galería de Recuerdos</h2>
+        <!-- Galería -->
         <div id="gallery">
-            </div>
-
-        <div class="pagination">
-            <button id="prev-page" class="nav-btn">Página Anterior</button>
-            <span id="page-info"></span>
-            <button id="next-page" class="nav-btn">Página Siguiente</button>
+            <!-- Las fotos se cargarán aquí -->
         </div>
 
-    </div> <div id="myModal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="img01">
+        <!-- Fecha decorativa al pie -->
+        <div class="footer-date">
+            Juntos por siempre
+        </div>
+    </div>
+
+    <!-- Modal para ver fotos -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
     </div>
 
     <script>
-        // --- INICIO DEL NUEVO JAVASCRIPT ---
+        // URL DEL SERVIDOR (Asegúrate que sea la correcta de tu proyecto "amorcito")
+        const API_URL = 'https://galeria-con-mi-amorcito.onrender.com'; 
 
-        // Elementos del DOM
         const uploadForm = document.getElementById('upload-form');
         const photoInput = document.getElementById('photo-input');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const submitBtn = document.getElementById('submit-btn');
         const gallery = document.getElementById('gallery');
-        const modal = document.getElementById("myModal"); // Ahora sí lo encuentra
-        const modalImg = document.getElementById("img01"); // Ahora sí lo encuentra
-        const span = document.getElementsByClassName("close")[0]; // Ahora sí lo encuentra
-        const prevPageBtn = document.getElementById('prev-page'); // Ahora sí lo encuentra
-        const nextPageBtn = document.getElementById('next-page'); // Ahora sí lo encuentra
-        const pageInfo = document.getElementById('page-info'); // Ahora sí lo encuentra
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const span = document.getElementsByClassName("close")[0];
 
-        // URL del servidor
-        const API_URL = 'https://galeria-con-mi-amorcito.onrender.com';
-
-        // Estado de la galería
-        let allPhotos = [];
-        let currentPage = 1;
-        const photosPerPage = 6; // Fotos por "página" del libro
-        let totalPages = 1;
-
-        // --- FUNCIÓN PARA MOSTRAR LA PÁGINA ACTUAL ---
-        function displayPage(page) {
-            gallery.innerHTML = ''; // Limpiamos la página
-            currentPage = page;
-
-            // Calculamos el total de páginas
-            totalPages = Math.ceil(allPhotos.length / photosPerPage);
-            if (totalPages === 0) totalPages = 1;
-
-            // Actualizamos la información de la página
-            pageInfo.textContent = `Página ${currentPage} / ${totalPages}`;
-
-            // Habilitamos o deshabilitamos botones de navegación
-            prevPageBtn.disabled = (currentPage === 1);
-            nextPageBtn.disabled = (currentPage === totalPages);
-
-            // Calculamos qué fotos mostrar
-            const startIndex = (page - 1) * photosPerPage;
-            const endIndex = startIndex + photosPerPage;
-            const photosToShow = allPhotos.slice(startIndex, endIndex);
-
-            // Añadimos cada foto con un estilo aleatorio
-            photosToShow.forEach(photoPath => {
-                addImageToGallery(photoPath);
-            });
-        }
-
-        // --- FUNCIÓN PARA AÑADIR UNA FOTO (MODIFICADA) ---
-        function addImageToGallery(imagePath) {
-            const filename = imagePath.split('/').pop();
-            const container = document.createElement('div');
-            container.classList.add('gallery-item');
-
-            const newImage = document.createElement('img');
-            newImage.src = imagePath;
-            newImage.alt = 'Recuerdo';
-            newImage.classList.add('gallery-img');
-            newImage.onclick = () => openModal(imagePath);
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerText = 'X';
-            deleteButton.classList.add('delete-btn');
-            deleteButton.onclick = () => deletePhoto(filename, container);
-
-            container.appendChild(newImage);
-            container.appendChild(deleteButton);
-
-            // --- LA MAGIA DEL ESTILO ASIMÉTRICO ---
-            const randomRotate = Math.random() * 20 - 10; // -10 a +10 grados
-            const randomTop = Math.random() * 65 + 5;     // 5% a 70% desde arriba
-            const randomLeft = Math.random() * 65 + 5;    // 5% a 70% desde la izquierda
-            const randomZIndex = Math.floor(Math.random() * 5); // Para que se superpongan
-
-            container.style.transform = `rotate(${randomRotate}deg)`;
-            container.style.top = `${randomTop}%`;
-            container.style.left = `${randomLeft}%`;
-            container.style.zIndex = randomZIndex;
-
-            gallery.appendChild(container); // Usamos appendChild en lugar de prepend
-        }
-
-        // --- FUNCIÓN PARA CARGAR LAS FOTOS AL INICIO (MODIFICADA) ---
-        async function loadInitialPhotos() {
-            try {
-                const response = await fetch(`${API_URL}/photos`);
-                allPhotos = await response.json(); // Guardamos las fotos en nuestro array
-                displayPage(1); // Mostramos la primera página
-            } catch (error) {
-                console.error('Error al cargar las fotos:', error);
-            }
-        }
-
-        // --- FUNCIÓN PARA SUBIR LA FOTO (MODIFICADA) ---
-        uploadForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const file = photoInput.files[0];
-            if (!file) { alert('Por favor, selecciona una foto.'); return; }
-            const formData = new FormData();
-            formData.append('photo', file);
-
-            try {
-                const response = await fetch(`${API_URL}/upload`, { method: 'POST', body: formData });
-                const result = await response.json();
-                if (result.success) {
-                    alert('¡Recuerdo subido con éxito!');
-                    allPhotos.unshift(result.filePath); // Añadimos la nueva foto al inicio del array
-                    displayPage(1); // Volvemos a la página 1 para verla
-                    uploadForm.reset();
-                } else {
-                    alert('Hubo un error al subir la foto.');
-                }
-            } catch (error) {
-                alert('No se pudo conectar con el servidor.');
-            }
+        // Mostrar nombre del archivo
+        photoInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileNameDisplay.textContent = this.files[0].name;
+            } else { fileNameDisplay.textContent = ""; }
         });
 
-        // --- FUNCIÓN PARA ELIMINAR FOTOS (MODIFICADA) ---
-        async function deletePhoto(filename, containerElement) {
-            const password = prompt("Para eliminar el recuerdo, ingresa la contraseña:");
-            if (!password) return;
+        // Subir Foto
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = photoInput.files[0];
+            if(!file) return;
+            
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            submitBtn.innerText = 'Guardando...';
+            submitBtn.disabled = true;
 
             try {
-                const response = await fetch(`${API_URL}/delete/${filename}`, {
+                const res = await fetch(`${API_URL}/upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+                if(data.success) {
+                    alert('¡Recuerdo guardado con éxito!');
+                    addPhotoToGallery(data.filePath);
+                    uploadForm.reset();
+                    fileNameDisplay.textContent = '';
+                } else { alert('Error: ' + data.message); }
+            } catch (err) { console.error(err); alert('Error de conexión. Revisa el servidor.'); }
+            finally { submitBtn.innerText = 'Subir Recuerdo'; submitBtn.disabled = false; }
+        });
+
+        // Cargar Fotos
+        async function loadPhotos() {
+            try {
+                const res = await fetch(`${API_URL}/photos`);
+                const photos = await res.json();
+                gallery.innerHTML = '';
+                photos.forEach(url => addPhotoToGallery(url));
+            } catch (err) { console.error(err); }
+        }
+
+        // Eliminar Foto
+        async function deletePhoto(filename, div, event) {
+            event.stopPropagation();
+            const password = prompt("Contraseña para eliminar:");
+            if(!password) return;
+            try {
+                const res = await fetch(`${API_URL}/delete/${filename}`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: password })
+                    body: JSON.stringify({ password })
                 });
-                const result = await response.json();
-                if (result.success) {
-                    alert('Recuerdo eliminado.');
-                    // Recargamos la lista de fotos desde el servidor
-                    loadInitialPhotos();
-                } else {
-                    alert('Error al eliminar: ' + result.message);
-                }
-            } catch (error) {
-                alert('No se pudo conectar con el servidor.');
-            }
+                const data = await res.json();
+                if(data.success) { div.remove(); alert('Foto eliminada.'); }
+                else { alert(data.message); }
+            } catch (err) { alert('Error de conexión.'); }
         }
 
-        // --- LÓGICA DE NAVEGACIÓN Y MODAL ---
-        prevPageBtn.onclick = () => {
-            if (currentPage > 1) {
-                displayPage(currentPage - 1);
-            }
-        };
-        nextPageBtn.onclick = () => {
-            if (currentPage < totalPages) {
-                displayPage(currentPage + 1);
-            }
-        };
+        // Añadir foto al DOM
+        function addPhotoToGallery(url) {
+            const filename = url.split('/').pop();
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = url; 
+            img.className = 'gallery-img';
+            img.onclick = () => { modal.style.display = "block"; modalImg.src = url; };
 
-        function openModal(imageSrc) {
-            modal.style.display = "block";
-            modalImg.src = imageSrc;
-        }
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+            const btn = document.createElement('button');
+            btn.innerHTML = '×'; // X más estética
+            btn.className = 'delete-btn';
+            btn.title = 'Eliminar';
+            btn.onclick = (e) => deletePhoto(filename, div, e);
+
+            div.appendChild(img);
+            div.appendChild(btn);
+            gallery.prepend(div);
         }
 
-        // Carga inicial
-        window.onload = loadInitialPhotos;
-        // --- FIN DEL NUEVO JAVASCRIPT ---
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
+        window.onload = loadPhotos;
     </script>
-
 </body>
 </html>
