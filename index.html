@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jhonattan y Debora</title>
+    <title>Jhonattan y Debora - Álbum 3D</title>
     
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -54,6 +54,7 @@
         #album-wrapper {
             perspective: 1500px;
             transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            margin: auto; /* Margen de seguridad */
         }
 
         #album {
@@ -73,7 +74,7 @@
             position: absolute; width: 100%; height: 100%;
             backface-visibility: hidden; background: var(--paper-color);
             box-shadow: inset 0 0 40px rgba(139, 69, 19, 0.15), 0 0 10px rgba(0,0,0,0.2);
-            border-radius: 2px 10px 10px 2px; padding: 20px;
+            border-radius: 2px 10px 10px 2px; padding: 15px; /* Reducido para evitar recortes */
             box-sizing: border-box; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             overflow: hidden;
@@ -99,10 +100,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 15px;
+            gap: 10px; /* Gap ajustado */
             width: 100%;
             height: 100%;
-            padding: 10px;
+            padding: 5px;
             box-sizing: border-box;
             align-items: center;
             justify-items: center;
@@ -112,34 +113,36 @@
         .polaroid-wrapper { position: relative; display: flex; justify-content: center; align-items: center; }
         
         .polaroid {
-            background: white; padding: 8px 8px 25px 8px;
+            background: white; padding: 6px 6px 20px 6px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid #eee;
             position: relative; transition: transform 0.3s;
+            max-width: 19vw; /* Límite para evitar desbordes */
+            max-height: 38vh;
         }
-        .polaroid:hover { transform: scale(1.08); z-index: 10; }
+        .polaroid:hover { transform: scale(1.05); z-index: 10; }
         
         .polaroid img {
-            width: 18vw; height: 32vh; object-fit: cover; cursor: pointer;
+            width: 16vw; height: 30vh; object-fit: cover; cursor: pointer;
             filter: sepia(15%);
         }
 
         .washi-tape {
-            position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-3deg);
-            width: 60px; height: 20px; background: rgba(220, 200, 180, 0.7);
+            position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+            width: 50px; height: 15px; background: rgba(220, 200, 180, 0.7);
             border: 1px dashed rgba(0,0,0,0.1); z-index: 5;
         }
 
         .delete-btn {
-            position: absolute; top: -10px; right: -10px; background: #d9534f;
-            color: white; border: 2px solid white; width: 25px; height: 25px; border-radius: 50%;
+            position: absolute; top: -8px; right: -8px; background: #d9534f;
+            color: white; border: 2px solid white; width: 22px; height: 22px; border-radius: 50%;
             cursor: pointer; font-weight: bold; opacity: 0; transition: opacity 0.3s;
-            display: flex; align-items: center; justify-content: center; z-index: 20; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; z-index: 20; font-size: 10px;
         }
         .polaroid:hover .delete-btn { opacity: 1; }
 
-        /* --- BOTÓN FLOTANTE Y MODALES --- */
+        /* --- BOTÓN FLOTANTE (Corazón minimalista con '+') --- */
         #fab-upload {
-            position: fixed; bottom: 30px; right: 30px;
+            position: fixed; bottom: 4vh; right: 2vw; /* Distancia segura de la esquina */
             background: transparent; border: none;
             padding: 0; cursor: pointer;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
@@ -149,6 +152,7 @@
         #fab-upload:hover { transform: translateY(-5px) scale(1.1); filter: drop-shadow(0 8px 20px rgba(0,128,128,0.4)); }
         #fab-upload svg { display: block; }
 
+        /* --- MODALES --- */
         .modal-upload {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: var(--bg-modal);
@@ -172,12 +176,12 @@
         }
         button#submit-btn:disabled { background: #ccc; }
 
-        /* Modal para visualizar fotos */
-        .modal-view { display: none; position: fixed; z-index: 2000; padding-top: 20px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); flex-direction: column; justify-content: center; align-items: center; }
-        .modal-content-view { max-width: 90%; max-height: 90vh; border: 10px solid white; object-fit: contain; }
+        /* Modal para visualizar fotos ajustado */
+        .modal-view { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); flex-direction: column; justify-content: center; align-items: center; }
+        .modal-content-view { max-width: 90vw; max-height: 80vh; border: 8px solid white; object-fit: contain; margin: auto; display: block;}
         .close-view { position: absolute; top: 20px; right: 40px; color: #f1f1f1; font-size: 50px; font-weight: bold; cursor: pointer; z-index: 2001; }
 
-        /* Estilos del Custom Dialog (Reemplazo de alert y prompt) */
+        /* Estilos del Custom Dialog */
         .dialog-input { display:none; width: 80%; padding: 10px; margin: 15px auto; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif; }
         .dialog-btn-container { display:flex; justify-content:center; gap: 15px; margin-top: 20px;}
         .dialog-btn { border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight: bold; font-family: 'Montserrat', sans-serif;}
@@ -188,12 +192,6 @@
         @media screen and (max-width: 768px) and (orientation: portrait) {
             #desktop, #fab-upload { display: none !important; }
             #rotate-message { display: flex; }
-        }
-        
-        @media screen and (max-width: 900px) and (orientation: landscape) {
-            #album { width: 40vw; height: 85vh; }
-            .polaroid img { width: 15vw; height: 30vh; }
-            .cover-title { font-size: 6vw; }
         }
     </style>
 </head>
@@ -218,9 +216,7 @@
     <!-- BOTÓN FLOTANTE (Corazón minimalista con '+') -->
     <button id="fab-upload" onclick="document.getElementById('uploadModal').style.display='flex'" title="Añadir Recuerdo">
         <svg viewBox="0 0 24 24" width="70" height="70">
-            <!-- Corazón -->
             <path fill="var(--accent-color)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            <!-- Símbolo '+' centrado ópticamente -->
             <line x1="8.5" y1="9.5" x2="15.5" y2="9.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="12" y1="6" x2="12" y2="13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
         </svg>
@@ -242,7 +238,7 @@
         </div>
     </div>
 
-    <!-- Custom Dialog Modal (Para evitar alerts/prompts del navegador) -->
+    <!-- Custom Dialog Modal (Reemplazo alert y prompt nativos) -->
     <div id="customDialog" class="modal-upload" style="z-index: 3000;">
         <div class="modal-content-upload" style="max-width: 350px;">
             <h3 id="dialogMsg" style="color: #333; margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif;"></h3>
@@ -265,7 +261,7 @@
         let currentLeaf = 0;
         let totalLeaves = 0;
 
-        // Fotos temporales
+        // Fotos base si no hay en el servidor
         const fallbackPhotos = [
             'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400',
             'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400',
@@ -368,7 +364,7 @@
 
         function createPhotoElement(url) {
             const filename = url.split('/').pop();
-            const rotation = (Math.random() * 8 - 4).toFixed(1); 
+            const rotation = (Math.random() * 6 - 3).toFixed(1); 
             
             return `
                 <div class="polaroid-wrapper" style="transform: rotate(${rotation}deg)">
@@ -393,8 +389,8 @@
             const wrapper = document.getElementById('album-wrapper');
 
             leaves.forEach((leaf, index) => {
-                leaf.style.transition = ''; // Limpiar por si se canceló un drag manual
-                leaf.style.transform = '';  // Limpiar transform inline del drag
+                leaf.style.transition = ''; 
+                leaf.style.transform = '';  
 
                 if (index < currentLeaf) {
                     leaf.classList.add('flipped');
@@ -487,7 +483,6 @@
         let dragDirection = null;
 
         function startDrag(e) {
-            // Ignorar clics en botones o imágenes para no interferir en sus funciones
             if(e.target.tagName === 'BUTTON' || (e.target.tagName === 'IMG' && e.target.closest('.polaroid')) || e.target.closest('.modal-upload')) return;
             
             isDragging = true;
@@ -497,37 +492,32 @@
             const clickX = startX - albumRect.left;
             const leaves = document.querySelectorAll('.leaf');
             
-            // Determinar si arrastramos la página derecha (siguiente) o izquierda (anterior)
             if (clickX > albumRect.width / 2 && currentLeaf < totalLeaves) {
                 dragDirection = 'next';
                 dragLeaf = leaves[currentLeaf];
             } else if (clickX <= albumRect.width / 2 && currentLeaf > 0) {
                 dragDirection = 'prev';
                 dragLeaf = leaves[currentLeaf - 1];
-            } else {
-                dragLeaf = null;
-            }
+            } else { dragLeaf = null; }
 
-            if (dragLeaf) {
-                dragLeaf.style.transition = 'none'; // Quitar transición CSS para seguir el dedo en tiempo real
-            }
+            if (dragLeaf) dragLeaf.style.transition = 'none';
         }
 
         function onDrag(e) {
             if (!isDragging || !dragLeaf) return;
-            e.preventDefault(); // Evitar comportamientos del navegador como scroll o retroceso
+            e.preventDefault(); 
             
             const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
             let deltaX = currentX - startX;
             const albumWidth = albumEl.offsetWidth;
             
             if (dragDirection === 'next') {
-                if (deltaX > 0) deltaX = 0; // No permitir arrastrar hacia la derecha
+                if (deltaX > 0) deltaX = 0; 
                 let angle = (deltaX / albumWidth) * 180;
                 if (angle < -180) angle = -180;
                 dragLeaf.style.transform = `rotateY(${angle}deg)`;
             } else if (dragDirection === 'prev') {
-                if (deltaX < 0) deltaX = 0; // No permitir arrastrar hacia la izquierda
+                if (deltaX < 0) deltaX = 0; 
                 let angle = -180 + ((deltaX / albumWidth) * 180);
                 if (angle > 0) angle = 0;
                 dragLeaf.style.transform = `rotateY(${angle}deg)`;
@@ -539,26 +529,24 @@
             isDragging = false;
             
             if (dragLeaf) {
-                dragLeaf.style.transition = ''; // Devolver transición animada
+                dragLeaf.style.transition = ''; 
                 
                 const endX = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].pageX;
                 const deltaX = endX - startX;
-                const threshold = albumEl.offsetWidth * 0.15; // Requiere arrastrar un 15% del ancho para voltear
+                const threshold = albumEl.offsetWidth * 0.15; 
                 
                 if (dragDirection === 'next' && deltaX < -threshold) turnPage('next');
                 else if (dragDirection === 'prev' && deltaX > threshold) turnPage('prev');
-                else updateBookView(); // Si no se arrastró lo suficiente, la hoja regresa a su estado original
+                else updateBookView(); 
                 
                 dragLeaf = null;
             }
         }
 
-        // Integrar eventos para ratón
         albumEl.addEventListener('mousedown', startDrag);
         document.addEventListener('mousemove', onDrag, {passive: false});
         document.addEventListener('mouseup', endDrag);
 
-        // Integrar eventos para pantallas táctiles (móviles/tabletas)
         albumEl.addEventListener('touchstart', startDrag, {passive: true});
         document.addEventListener('touchmove', onDrag, {passive: false});
         document.addEventListener('touchend', endDrag);
@@ -569,8 +557,8 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
-                    .then(() => console.log('Service Worker Registrado'))
-                    .catch(err => console.log('SW bloqueado en lienzo de pruebas (comportamiento esperado).'));
+                    .then(() => console.log('SW Registrado'))
+                    .catch(err => console.log('SW bloqueado temporalmente (comportamiento esperado en lienzo).'));
             });
         }
     </script>
