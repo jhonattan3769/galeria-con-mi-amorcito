@@ -3,6 +3,7 @@
   "short_name": "Nuestro Álbum",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "landscape",
   "background_color": "#FFF9C4",
   "theme_color": "#008080",
   "icons": [
