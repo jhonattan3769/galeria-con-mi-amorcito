@@ -1,0 +1,16 @@
+{
+  "name": "Álbum Jhonattan y Debora",
+  "short_name": "Nuestro Álbum",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFF9C4",
+  "theme_color": "#008080",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
