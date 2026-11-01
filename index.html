@@ -246,6 +246,10 @@
                     📷 SELECCIONAR FOTO
                 </label>
                 <div id="file-name-display" style="font-size: 0.9em; margin-bottom: 15px; color: #666;"></div>
+                
+                <!-- NUEVO CAMPO DE CONTRASEÑA -->
+                <input type="password" id="upload-password" placeholder="Contraseña" required style="display: block; margin: 0 auto 15px auto; padding: 10px; width: 80%; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
+                
                 <button type="submit" id="submit-btn">SUBIR FOTO</button>
             </form>
         </div>
@@ -450,10 +454,13 @@
         document.getElementById('upload-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const file = photoInput.files[0];
+            const pass = document.getElementById('upload-password').value; // ENVÍO DE CONTRASEÑA AÑADIDO
+            
             if(!file) return;
             
             const formData = new FormData();
             formData.append('photo', file);
+            formData.append('password', pass); // ENVÍO DE CONTRASEÑA AÑADIDO
             
             submitBtn.innerText = 'GUARDANDO...';
             submitBtn.disabled = true;
