@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 1. BLOQUEO DE ZOOM EN VIEWPORT -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jhonattan y Debora - Álbum 3D</title>
     
     <!-- PWA -->
@@ -15,6 +16,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
+        /* 2. BLOQUEO GLOBAL DE GESTOS Y SELECCIÓN TÁCTIL */
+        * {
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
         :root {
             --accent-color: #008080;
             --bg-modal: rgba(0,0,0,0.8);
@@ -66,6 +75,8 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             transform-style: preserve-3d; transform-origin: left center;
             transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            /* 3A. ACELERACIÓN POR HARDWARE */
+            will-change: transform;
         }
 
         .leaf.flipped { transform: rotateY(-180deg); }
@@ -78,6 +89,8 @@
             box-sizing: border-box; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             overflow: hidden;
+            /* 3B. ACELERACIÓN POR HARDWARE */
+            will-change: transform;
         }
 
         .face.back {
@@ -257,6 +270,15 @@
     </div>
 
     <script>
+        // 4. JAVASCRIPT: BLOQUEO DE ZOOM POR DOBLE TOQUE Y PELLIZCO
+        document.addEventListener('dblclick', function(event) {
+            event.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+
         const API_URL = 'https://galeria-con-mi-amorcito.onrender.com'; 
         let currentLeaf = 0;
         let totalLeaves = 0;
